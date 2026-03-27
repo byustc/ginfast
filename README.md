@@ -243,7 +243,7 @@ Database:
   Port: 3306             # 数据库端口
   Username: "root"       # 数据库用户名
   Password: "password"   # 数据库密码
-  Database: "gin_fast"   # 数据库名
+  Database: "ginfast_db"   # 数据库名
   Charset: "utf8mb4"     # 字符集
   ParseTime: true        # 解析时间
   Loc: "Local"           # 时区
@@ -322,7 +322,6 @@ Database:
   - 自动适配表单校验和表格展示规则
 
 - **智能特性**
-  - 支持多数据库类型（MySQL、PostgreSQL、SQL Server）
   - 自动识别数据库字段注释生成代码文档
   - 支持字段级别的显示控制（列表展示、表单展示、查询展示）
   - 自动处理时间字段、主键字段等特殊字段
@@ -415,7 +414,7 @@ GET /api/codegen/preview?genId=<gen_id>
 | 字段 | 说明 | 示例 |
 |------|------|------|
 | dbType | 数据库类型 | mysql、postgresql、sqlserver |
-| database | 数据库名 | gin-fast |
+| database | 数据库名 | ginfast_db |
 | name | 表名 | sys_user |
 | moduleName | 模块名 | user |
 | fileName | 文件名 | user |
@@ -684,7 +683,7 @@ DELETE /api/pluginsmanager/uninstall?folderName=example
 在config.yml中配置前端项目路径：
 ```yaml
 gen:
-  dir: "../ginfast-ui"  # 前端项目根目录相对路径
+  dir: "../ginfast-tenant-ui"  # 前端项目根目录相对路径
 ```
 
 ## 插件开发规范
