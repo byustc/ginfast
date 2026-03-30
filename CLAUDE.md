@@ -66,6 +66,43 @@ go test -v ./app/utils/casbinhelper/...
 - 角色定义: `g = _, _, _` (支持带域的角色继承)
 - 自动从数据库同步策略（默认 120 秒，可配置）
 
+### 插件开发 (plugins/)
+
+新增功能模块放在 `plugins/` 目录下，完整结构如下：
+
+```
+plugins/[name]/
+├── controllers/           # HTTP 控制器（继承 controllers.Common）
+├── models/                # 数据模型 + *param.go 参数验证
+├── service/               # 业务逻辑层
+├── routes/                # 路由注册文件
+├── scheduler/             # 定时任务执行器（可选）
+└── [name]init.go          # 插件初始化
+```
+
+**路由注册机制：**
+1. 在 `routes/` 中使用 `ginhelper.RegisterPluginRoutes()` 注册回调
+2. 在 `plugins/[name]init.go` 中用 `import _ "gin-fast/plugins/[name]/routes"` 导入
+3. main.go 调用 `ginhelper.InitPluginRoutes(engine)` 初始化所有插件路由
+
+**路由注册示例：**
+```go
+// plugins/example/routes/exampleroutes.go
+func init() {
+    ginhelper.RegisterPluginRoutes(func(engine *gin.Engine) {
+        example := engine.Group("/api/plugins/example")
+        example.Use(middleware.JWTAuthMiddleware())
+        example.Use(middleware.CasbinMiddleware())
+        {
+            example.GET("/list", controller.List)
+            example.POST("/add", controller.Create)
+        }
+    })
+}
+```
+
+参考：`plugins/example/`（最小示例）、`plugins/resource/`（完整业务插件）
+
 ## 配置
 
 主配置文件: `config/config.yml` (使用 Viper)
